@@ -6,6 +6,7 @@ import android.view.View
 import com.example.custombutton.R
 import com.example.custombutton.main.model.Alarm
 import com.example.custombutton.main.model.EventHandler
+import com.example.custombutton.main.model.WifiInformationProvider
 import com.example.custombutton.main.ui.TextFeedbackClass
 
 
@@ -13,8 +14,8 @@ import com.example.custombutton.main.ui.TextFeedbackClass
  * class represents the main activity includes emergency button
  */
 class MainActivity : AppCompatActivity() {
-   private var eventHandler : EventHandler = EventHandler()
-
+    private var eventHandler : EventHandler = EventHandler()
+    private var wifiInfoProvider : WifiInformationProvider = WifiInformationProvider()
     /**
      * creates ui of the screen which in activity_main
      */
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
             eventHandler.attachObserver(Alarm(eventHandler))
             eventHandler.attachObserver(TextFeedbackClass(eventHandler))
         }
+
     }
 
     /**
