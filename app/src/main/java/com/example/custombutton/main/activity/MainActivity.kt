@@ -6,16 +6,13 @@ import android.view.View
 import com.example.custombutton.R
 import com.example.custombutton.main.model.Alarm
 import com.example.custombutton.main.model.EventHandler
-import com.example.custombutton.main.model.Observer
-import com.example.custombutton.main.model.TextFeedbackClass
+import com.example.custombutton.main.ui.TextFeedbackClass
 
 
 /**
  * class represents the main activity includes emergency button
  */
-
 class MainActivity : AppCompatActivity() {
-    // shared preference event handler
    private var eventHandler : EventHandler = EventHandler()
 
     /**
@@ -33,10 +30,9 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * notifies all observers of eventHandler
+     * @param view - a view button
      */
     fun notifyObservers(view: View) {
-        for (observer : Observer in eventHandler?.getObservers()?.toList()!!){
-            observer.update(applicationContext)
-        }
+        eventHandler.notifyALlObservers(applicationContext)
     }
 }

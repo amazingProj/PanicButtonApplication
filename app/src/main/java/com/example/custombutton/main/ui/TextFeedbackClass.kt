@@ -1,7 +1,9 @@
-package com.example.custombutton.main.model
+package com.example.custombutton.main.ui
 
 import android.content.Context
 import android.widget.Toast
+import com.example.custombutton.main.model.EventHandler
+import com.example.custombutton.main.model.Observer
 
 class TextFeedbackClass : Observer {
     constructor(eventHandler: EventHandler){
