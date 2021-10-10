@@ -23,7 +23,7 @@
         android:textColor="@color/white"
         android:textSize="70dp"
         android:background="@drawable/custom_button"
-        android:onClick="playSound"
+        android:onClick="notifyObservers"
         android:outlineSpotShadowColor="@color/black"
         android:shadowColor="@color/black"
         android:shadowDx="1"

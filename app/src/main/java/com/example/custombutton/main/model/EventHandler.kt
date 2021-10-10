@@ -1,23 +1,27 @@
 package com.example.custombutton.main.model
 
-import com.example.custombutton.main.model.Observer
+import android.content.Context
 
 /**
  * represents event handler of all his observers
  */
 class EventHandler{
-    private var observers : MutableList<Observer>? = null;
+    private var observers : MutableList<Observer> = ArrayList();
 
-    fun EventHandler() {
+    constructor() {
     }
 
     fun attachObserver(_observer : Observer){
         observers?.add(_observer)
     }
 
-    fun notifyALlObservers(){
+    fun notifyALlObservers(context : Context){
         for(observer : Observer in observers!!){
-            observer.update()
+            observer.update(context)
         }
+    }
+
+    fun getObservers(): MutableList<Observer>? {
+        return observers;
     }
 }
