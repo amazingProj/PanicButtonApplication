@@ -6,5 +6,6 @@ package com.example.custombutton.main.model
  * to update all related function in application
  */
 interface Observer {
-
+    var eventHandler : EventHandler
+    fun update()
 }

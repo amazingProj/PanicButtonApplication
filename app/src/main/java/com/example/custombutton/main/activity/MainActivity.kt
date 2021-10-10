@@ -13,7 +13,6 @@ import com.example.custombutton.R
  */
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
-
     private var media: MediaPlayer? = null
 
     /**
