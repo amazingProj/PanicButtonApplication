@@ -4,13 +4,22 @@ import android.content.Context
 import android.media.MediaPlayer
 import com.example.custombutton.R
 
+/**
+ * class represents an alarm sound in the background
+ */
 @Suppress("DEPRECATION")
-class Alarm : Observer{
+class Alarm
+/**
+ * constructs an alarm class by an event handler which it relates to it
+ * @param eventHandler - a related event handler class
+ */(eventHandler: EventHandler) : Observer{
     private var media: MediaPlayer? = MediaPlayer()
 
-    constructor(eventHandler: EventHandler){
+    init {
         eventHandler.attachObserver(this)
     }
+
+    @Override
     override fun update(context : Context) {
         media = MediaPlayer.create(context, R.raw.emergency_sound)
         media?.start()

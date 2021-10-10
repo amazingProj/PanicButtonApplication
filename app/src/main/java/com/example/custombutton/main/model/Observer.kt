@@ -8,5 +8,9 @@ import android.content.Context
  * to update all related function in application
  */
 interface Observer {
+    /**
+     * updates observer
+     * @param context - the activity we are doing the notifications
+     */
     fun update(context : Context)
 }

@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     /**
      * notifies all observers of eventHandler
      * @param view - a view button
+     * @notice we must view parameter because this is how it defines
+     *         in activity_main.xml with the view/button
      */
     fun notifyObservers(view: View) {
         eventHandler.notifyALlObservers(applicationContext)
