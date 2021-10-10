@@ -1,3 +1,4 @@
+<!-- canceling action bar in the top of the screen -->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.CustomButton" parent="Theme.AppCompat.Light.NoActionBar">

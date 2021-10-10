@@ -1,3 +1,4 @@
+<!-- an xml file with constants string that can be modified here -->
 <resources>
     <string name="app_name">לחצן מצוקה</string>
     <string name="emergency">SOS</string>

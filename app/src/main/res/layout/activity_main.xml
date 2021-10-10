@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- activity that firstly appear in the screen -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity"
+    tools:context=".main.activity.MainActivity"
     android:background="@color/white_not_boring">
-
+<!-- button which represents the emergency button -->
     <Button
         android:id="@+id/button"
         android:layout_width="300dp"
@@ -22,7 +23,13 @@
         android:textColor="@color/white"
         android:textSize="70dp"
         android:background="@drawable/custom_button"
-        android:onClick="playSound"/>
+        android:onClick="playSound"
+        android:outlineSpotShadowColor="@color/black"
+        android:shadowColor="@color/black"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="0.6"
+        android:textColorHighlight="@color/black"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
