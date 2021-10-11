@@ -15,7 +15,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         targetSdkVersion 31
-        minSdkVersion 27
+        minSdkVersion 28
     }
 
     buildTypes {
