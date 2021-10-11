@@ -1,13 +1,14 @@
 package com.example.custombutton.main.activity
 
+import android.net.wifi.WifiManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.example.custombutton.R
 import com.example.custombutton.main.model.Alarm
 import com.example.custombutton.main.model.EventHandler
-import com.example.custombutton.main.model.WifiInformationProvider
 import com.example.custombutton.main.ui.TextFeedbackClass
+import android.net.wifi.WifiInfo
 
 
 /**
@@ -15,7 +16,8 @@ import com.example.custombutton.main.ui.TextFeedbackClass
  */
 class MainActivity : AppCompatActivity() {
     private var eventHandler : EventHandler = EventHandler()
-    private var wifiInfoProvider : WifiInformationProvider = WifiInformationProvider()
+
+
     /**
      * creates ui of the screen which in activity_main
      */
@@ -27,7 +29,14 @@ class MainActivity : AppCompatActivity() {
             eventHandler.attachObserver(Alarm(eventHandler))
             eventHandler.attachObserver(TextFeedbackClass(eventHandler))
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
+        var wifiManager = this.getApplicationContext().getSystemService(android.content.Context.WIFI_SERVICE) as WifiManager?
+        var wifiInfo = wifiManager!!.getConnectionInfo()
+        var bssid = wifiInfo.bssid
+        var rssi = wifiInfo.rssi
     }
 
     /**
