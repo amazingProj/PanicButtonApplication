@@ -14,6 +14,7 @@ import com.example.custombutton.main.ui.TextFeedbackClass
 import android.net.wifi.WifiInfo
 import android.R.attr.delay
 import android.widget.Toast
+import android.content.Context
 
 /**
  * class represents the main activity includes emergency button
@@ -21,8 +22,7 @@ import android.widget.Toast
 class MainActivity : AppCompatActivity() {
     private var eventHandler : EventHandler = EventHandler()
     private var handler : Handler = Handler()
-    private val delay : Int = 500
-
+    private val delay : Int = 1000
     /**
      * creates ui of the screen which in activity_main
      */
@@ -37,15 +37,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        handler.postDelayed({
-            var wifiManager = this.getApplicationContext().getSystemService(android.content.Context.WIFI_SERVICE) as WifiManager?
-            var wifiInfo = wifiManager!!.getConnectionInfo()
-            var bssid = wifiInfo.bssid
-            var rssi = wifiInfo.rssi
-            var view : TextView = findViewById(R.id.textView) as TextView
-            view.text = "RSSI $rssi"
-            view = findViewById(R.id.textView2) as TextView
-            view.text = "BSSID $bssid"
+
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                var wifiManager = applicationContext.getSystemService(android.content.Context.WIFI_SERVICE) as WifiManager?
+                var wifiInfo = wifiManager!!.getConnectionInfo()
+                var bssid = wifiInfo.bssid
+                var rssi = wifiInfo.rssi
+                var view : TextView = findViewById(R.id.textView) as TextView
+                view.text = "RSSI $rssi"
+                view = findViewById(R.id.textView2) as TextView
+                view.text = "BSSID $bssid"
+                handler.postDelayed(this, Integer.toUnsignedLong(delay))
+            }
         }, Integer.toUnsignedLong(delay))
         super.onResume()
     }
