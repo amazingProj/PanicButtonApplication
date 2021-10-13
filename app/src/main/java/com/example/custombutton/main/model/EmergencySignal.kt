@@ -16,6 +16,6 @@ class EmergencySignal
     }
     @Override
     override fun update(context : Context) {
-        // To do it when server be ready
+        //var singleton : SingletonEmergencySignal =
     }
 }

@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         retrofit = Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
         retrofitPost = retrofit?.create(RetrofitPost::class.java)
+
         // attach alarm and text feedback to event handler class
         if (eventHandler.getObservers().isNullOrEmpty()){
             eventHandler.attachObserver(Alarm(eventHandler))
@@ -46,6 +47,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * sending the location each of x seconds
+     */
     override fun onResume() {
         handler.postDelayed(object : Runnable {
             override fun run() {
@@ -61,8 +65,7 @@ class MainActivity : AppCompatActivity() {
                 var map: HashMap<kotlin.String?, kotlin.Int?>? = HashMap()
                 map?.put("RSSI", rssi)
                 map?.put("IP", ip)
-
-                postToNode(map, retrofitPost)
+                retrofitPost!!.executesWifiInfo(map)
                 handler.postDelayed(this, Integer.toUnsignedLong(delay))
             }
         }, Integer.toUnsignedLong(delay))
@@ -77,9 +80,5 @@ class MainActivity : AppCompatActivity() {
      */
     fun notifyObservers(view: View) {
         eventHandler.notifyALlObservers(applicationContext)
-    }
-
-    fun postToNode(map : HashMap<kotlin.String?, kotlin.Int?>?, retrofitPost: RetrofitPost?){
-        var call: Call<Void?>? = retrofitPost!!.executesWifiInfo(map)
     }
 }
