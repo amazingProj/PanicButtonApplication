@@ -47,7 +47,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="BSSID"
+        android:hint="IP"
         app:layout_constraintBottom_toBottomOf="@id/button"
         app:layout_constraintEnd_toEndOf="@id/button"
         app:layout_constraintHorizontal_bias="0.242"

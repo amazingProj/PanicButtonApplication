@@ -18,7 +18,8 @@ import android.R.attr.delay
 import android.widget.Toast
 import android.content.Context
 import retrofit2.Retrofit
-import retrofit2.Converter.gson.GsonConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Call
 
 /**
  * class represents the main activity includes emergency button
@@ -26,7 +27,7 @@ import retrofit2.Converter.gson.GsonConverterFactory
 class MainActivity : AppCompatActivity() {
     private var retrofit : Retrofit? = null
     private var retrofitPost : RetrofitPost? = null
-    private val BASE_URL : String = ""
+    private val BASE_URL : String = "http://10.0.2.2:3000"
     private var eventHandler : EventHandler = EventHandler()
     private var handler : Handler = Handler()
     private val delay : Int = 3000
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         retrofit = Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
-        retrofitPost = retrofit?.create(RetrofitPost.clsss)
+        retrofitPost = retrofit?.create(RetrofitPost::class.java)
         // attach alarm and text feedback to event handler class
         if (eventHandler.getObservers().isNullOrEmpty()){
             eventHandler.attachObserver(Alarm(eventHandler))
@@ -57,6 +58,11 @@ class MainActivity : AppCompatActivity() {
                 view.text = "RSSI $rssi"
                 view = findViewById(R.id.textView2) as TextView
                 view.text = "IP $ip"
+                var map: HashMap<kotlin.String?, kotlin.Int?>? = HashMap()
+                map?.put("RSSI", rssi)
+                map?.put("IP", ip)
+
+                postToNode(map, retrofitPost)
                 handler.postDelayed(this, Integer.toUnsignedLong(delay))
             }
         }, Integer.toUnsignedLong(delay))
@@ -71,5 +77,9 @@ class MainActivity : AppCompatActivity() {
      */
     fun notifyObservers(view: View) {
         eventHandler.notifyALlObservers(applicationContext)
+    }
+
+    fun postToNode(map : HashMap<kotlin.String?, kotlin.Int?>?, retrofitPost: RetrofitPost?){
+        var call: Call<Void?>? = retrofitPost!!.executesWifiInfo(map)
     }
 }

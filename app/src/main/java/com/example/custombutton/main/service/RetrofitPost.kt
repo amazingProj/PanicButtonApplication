@@ -7,5 +7,5 @@ import retrofit2.http.POST
 
 interface RetrofitPost {
     @POST("/wifiInfo")
-    open fun executesSignup(@Body map: HashMap<Int?, Int?>?): Call<Void?>?
+    open fun executesWifiInfo(@Body map: HashMap<String?, Int?>?): Call<Void?>?
 }
