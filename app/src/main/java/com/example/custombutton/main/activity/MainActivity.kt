@@ -27,7 +27,7 @@ import retrofit2.Call
 class MainActivity : AppCompatActivity() {
     private var retrofit : Retrofit? = null
     private var retrofitPost : RetrofitPost? = null
-    private val BASE_URL : String = "http://10.0.2.2:3000"
+    private val BASE_URL : String = "http://127.0.0.1:3000"
     private var eventHandler : EventHandler = EventHandler()
     private var handler : Handler = Handler()
     private val delay : Int = 3000
