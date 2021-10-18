@@ -13,15 +13,21 @@ class Alarm
  * constructs an alarm class by an event handler which it relates to it
  * @param eventHandler - a related event handler class
  */(eventHandler: EventHandler) : Observer{
+    private var isAlarmOn : Boolean? = null
     private var media: MediaPlayer? = MediaPlayer()
 
     init {
         eventHandler.attachObserver(this)
+        isAlarmOn = false
     }
 
     @Override
     override fun update(context : Context) {
-        media = MediaPlayer.create(context, R.raw.emergency_sound)
-        media?.start()
+        if (isAlarmOn == false) {
+            isAlarmOn = true
+            media = MediaPlayer.create(context, R.raw.emergency_sound)
+            media?.isLooping = true
+            media?.start()
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.custombutton.main.model
 
 import android.content.Context
+import android.view.View
+import com.example.custombutton.main.ui.TextFeedbackClass
 
 /**
  * represents event handler of all his observers
@@ -11,7 +13,6 @@ class EventHandler
  */
 {
     /********** field **********/
-
     private var observers : MutableList<Observer> = ArrayList()
 
     /********** getter **********/
