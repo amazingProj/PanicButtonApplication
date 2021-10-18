@@ -13,6 +13,7 @@ import com.example.custombutton.R
 import com.example.custombutton.main.model.Alarm
 import com.example.custombutton.main.model.EventHandler
 import com.example.custombutton.main.ui.TextFeedbackClass
+import com.example.custombutton.main.model.InformationClass
 import android.net.wifi.WifiInfo
 import android.R.attr.delay
 import android.widget.Toast
@@ -27,7 +28,7 @@ import retrofit2.Call
 class MainActivity : AppCompatActivity() {
     private var retrofit : Retrofit? = null
     private var retrofitPost : RetrofitPost? = null
-    private val BASE_URL : String = "http://127.0.0.1:3000"
+    private val BASE_URL : String = "http://10.0.2.2:3000"
     private var eventHandler : EventHandler = EventHandler()
     private var handler : Handler = Handler()
     private val delay : Int = 3000
@@ -55,6 +56,7 @@ class MainActivity : AppCompatActivity() {
             override fun run() {
                 var wifiManager = applicationContext.getSystemService(android.content.Context.WIFI_SERVICE) as WifiManager?
                 var wifiInfo = wifiManager!!.getConnectionInfo()
+                val singleton : InformationClass = InformationClass.instance
                 var bssid = wifiInfo.bssid
                 var rssi = wifiInfo.rssi
                 var ip : Int = wifiInfo.ipAddress
@@ -62,10 +64,9 @@ class MainActivity : AppCompatActivity() {
                 view.text = "RSSI $rssi"
                 view = findViewById(R.id.textView2) as TextView
                 view.text = "IP $ip"
-                var map: HashMap<kotlin.String?, kotlin.Int?>? = HashMap()
-                map?.put("RSSI", rssi)
-                map?.put("IP", ip)
-                retrofitPost!!.executesWifiInfo(map)
+                singleton.setRssi(rssi)
+                singleton.setIpAddress(ip)
+                retrofitPost!!.executesWifiInfo(singleton)
                 handler.postDelayed(this, Integer.toUnsignedLong(delay))
             }
         }, Integer.toUnsignedLong(delay))
@@ -78,7 +79,7 @@ class MainActivity : AppCompatActivity() {
      * @notice we must view parameter because this is how it defines
      *         in activity_main.xml with the view/button
      */
-    fun notifyObservers(view: View) {
+    fun notifyObservers(view : View) {
         eventHandler.notifyALlObservers(applicationContext)
     }
 }

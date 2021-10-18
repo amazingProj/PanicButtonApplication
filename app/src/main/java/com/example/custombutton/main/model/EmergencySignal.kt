@@ -16,6 +16,7 @@ class EmergencySignal
     }
     @Override
     override fun update(context : Context) {
-        //var singleton : SingletonEmergencySignal =
+        val singleton : InformationClass = InformationClass.instance
+        singleton.setIsAlarmed(true)
     }
 }

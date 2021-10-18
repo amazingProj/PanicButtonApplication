@@ -1,10 +1,13 @@
 package com.example.custombutton.main.model
 
-class InformationClass (){
+class InformationClass {
     private var rssi : Int? = null
     private var ipAddress : Int? = null
     private var isAlarmed : Boolean? = null
 
+    init {
+        isAlarmed = false
+    }
     /**
      * singleton objects whose properties
      * and functions are tied to a class but not to the instance of that class
