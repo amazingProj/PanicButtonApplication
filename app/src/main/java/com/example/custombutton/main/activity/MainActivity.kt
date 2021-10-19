@@ -1,5 +1,6 @@
 package com.example.custombutton.main.activity
 
+import com.example.custombutton.main.service.RetrofitClient
 import com.example.custombutton.main.service.RetrofitPost
 import android.widget.TextView
 import android.util.Log
@@ -28,7 +29,6 @@ import retrofit2.Call
 class MainActivity : AppCompatActivity() {
     private var retrofit : Retrofit? = null
     private var retrofitPost : RetrofitPost? = null
-    private val BASE_URL : String = "http://10.0.2.2:3000"
     private var eventHandler : EventHandler = EventHandler()
     private var handler : Handler = Handler()
     private val delay : Int = 3000
@@ -38,7 +38,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        retrofit = Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
+        var client : RetrofitClient = RetrofitClient()
+        retrofit = client.getClient()
         retrofitPost = retrofit?.create(RetrofitPost::class.java)
 
         // attach alarm and text feedback to event handler class
