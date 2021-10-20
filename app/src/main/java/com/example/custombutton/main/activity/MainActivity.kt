@@ -1,6 +1,7 @@
 package com.example.custombutton.main.activity
 
-import com.example.custombutton.main.service.RetrofitPost
+import com.example.custombutton.main.service.SocketHandler
+import com.example.custombutton.main.model.EmergencySignal
 import android.widget.TextView
 import android.util.Log
 import android.os.Handler
@@ -18,16 +19,11 @@ import android.net.wifi.WifiInfo
 import android.R.attr.delay
 import android.widget.Toast
 import android.content.Context
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.Call
 
 /**
  * class represents the main activity includes emergency button
  */
 class MainActivity : AppCompatActivity() {
-    private var retrofit : Retrofit? = null
-    private var retrofitPost : RetrofitPost? = null
     private val BASE_URL : String = "http://10.0.2.2:3000"
     private var eventHandler : EventHandler = EventHandler()
     private var handler : Handler = Handler()
@@ -38,14 +34,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        retrofit = Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
-        retrofitPost = retrofit?.create(RetrofitPost::class.java)
 
         // attach alarm and text feedback to event handler class
         if (eventHandler.getObservers().isNullOrEmpty()){
-            eventHandler.attachObserver(Alarm(eventHandler))
-            eventHandler.attachObserver(TextFeedbackClass(eventHandler))
+            //eventHandler.attachObserver(Alarm(eventHandler))
+            //eventHandler.attachObserver(TextFeedbackClass(eventHandler))
+            eventHandler.attachObserver(EmergencySignal(eventHandler))
         }
+        SocketHandler.setSocket()
+        SocketHandler.establishConnection()
     }
 
     /**
@@ -60,13 +57,19 @@ class MainActivity : AppCompatActivity() {
                 var bssid = wifiInfo.bssid
                 var rssi = wifiInfo.rssi
                 var ip : Int = wifiInfo.ipAddress
-                var view : TextView = findViewById(R.id.textView) as TextView
-                view.text = "RSSI $rssi"
-                view = findViewById(R.id.textView2) as TextView
-                view.text = "IP $ip"
+                var mac : String = wifiInfo.macAddress
+                var ssid : String = wifiInfo.ssid
+                //var view : TextView = findViewById(R.id.textView) as TextView
+                //view.text = "RSSI $rssi"
+                //view = findViewById(R.id.textView2) as TextView
+                //view.text = "IP $ip"
                 singleton.setRssi(rssi)
                 singleton.setIpAddress(ip)
-                retrofitPost!!.executesWifiInfo(singleton)
+                singleton.setMac(mac)
+                singleton.setSsid(ssid)
+                kotlin.io.print(singleton.toString())
+                val mSocket = SocketHandler.getSocket()
+                mSocket.emit("wifiInformation", singleton)
                 handler.postDelayed(this, Integer.toUnsignedLong(delay))
             }
         }, Integer.toUnsignedLong(delay))

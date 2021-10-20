@@ -4,7 +4,8 @@ class InformationClass {
     private var rssi : Int? = null
     private var ipAddress : Int? = null
     private var isAlarmed : Boolean? = null
-
+    private var mac : String? = null
+    private var ssid : String? = null
     init {
         isAlarmed = false
     }
@@ -27,5 +28,19 @@ class InformationClass {
 
     fun setIsAlarmed(_isAlarmed : Boolean){
         isAlarmed = _isAlarmed
+    }
+
+    fun setMac(_mac : String){
+        mac = _mac
+    }
+
+    fun setSsid(_ssid : String){
+        ssid = _ssid
+    }
+
+    override fun toString(): String {
+        return "Rssi is $rssi \nip is $ipAddress\nisAlarmed is $isAlarmed\n" +
+                "mac is $mac\nsisd is $ssid\n "
+
     }
 }
