@@ -1,11 +1,9 @@
 package com.example.custombutton.main.model
 
 class InformationClass {
-    private var rssi : Int? = null
-    private var ipAddress : Int? = null
     private var isAlarmed : Boolean? = null
-    private var mac : String? = null
-    private var ssid : String? = null
+    private var accessPoints : ArrayList<AccessPoint>? = ArrayList<AccessPoint>()
+
     init {
         isAlarmed = false
     }
@@ -18,29 +16,19 @@ class InformationClass {
         val instance = InformationClass()
     }
 
-    fun setRssi(_rssi : Int){
-        rssi = _rssi
-    }
-
-    fun setIpAddress(_ip : Int){
-        ipAddress = _ip
-    }
-
     fun setIsAlarmed(_isAlarmed : Boolean){
         isAlarmed = _isAlarmed
     }
 
-    fun setMac(_mac : String){
-        mac = _mac
-    }
-
-    fun setSsid(_ssid : String){
-        ssid = _ssid
+    fun addAccessPoint(accessPoint: AccessPoint){
+        accessPoints?.add(accessPoint)
     }
 
     override fun toString(): String {
-        return "Rssi is $rssi \nip is $ipAddress\nisAlarmed is $isAlarmed\n" +
-                "mac is $mac\nsisd is $ssid\n "
-
+        var s = String()
+        for (accessPoint in accessPoints!!){
+            s += accessPoint.toString() + "\n\n"
+        }
+        return s
     }
 }

@@ -35,6 +35,11 @@ class EventHandler
         observers.add(_observer)
     }
 
+    fun attachManyObservers(vararg  _observers : Observer){
+        for (_observer in _observers){
+            attachObserver(_observer)
+        }
+    }
     /**
      * notifies all observers
      * @param context - the activity within we do that notify
