@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!-- permission for app to communicate node js to work and others -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -14,7 +15,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CustomButton">
+        android:theme="@style/Theme.CustomButton"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".main.activity.MainActivity"
             android:exported="true"

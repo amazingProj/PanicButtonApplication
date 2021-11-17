@@ -1,28 +1,8 @@
 package com.example.custombutton.main.model
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 class InformationClass {
-    @SerializedName("mac")
-    @Expose
-    private var macAddress : String = String()
-
-    @SerializedName("ssid")
-    @Expose
-    private var ssid : String = String()
-
-    @SerializedName("rssi")
-    @Expose
-    private var rssi : Int? = null
-
-    @SerializedName("ip")
-    @Expose
-    private var ipAddress : Int? = null
-
-    @SerializedName("alarm")
-    @Expose
     private var isAlarmed : Boolean? = null
+    private var accessPoints : ArrayList<AccessPoint>? = ArrayList()
 
     init {
         isAlarmed = false
@@ -36,23 +16,19 @@ class InformationClass {
         val instance = InformationClass()
     }
 
-    fun setRssi(_rssi : Int){
-        rssi = _rssi
-    }
-
-    fun setIpAddress(_ip : Int){
-        ipAddress = _ip
-    }
-
     fun setIsAlarmed(_isAlarmed : Boolean){
         isAlarmed = _isAlarmed
     }
 
-    fun setMac(_mac : String){
-        macAddress = _mac
+    fun addAccessPoint(accessPoint: AccessPoint){
+        accessPoints?.add(accessPoint)
     }
 
-    fun setSsid(_ssid : String){
-        ssid = _ssid
+    override fun toString(): String {
+        var s = String()
+        for (accessPoint in accessPoints!!){
+            s += accessPoint.toString() + "\n\n"
+        }
+        return s
     }
 }

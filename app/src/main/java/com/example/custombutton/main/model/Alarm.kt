@@ -30,4 +30,8 @@ class Alarm
             media?.start()
         }
     }
+
+    override fun emergencySignalHasSent() {
+        TODO("Not yet implemented")
+    }
 }

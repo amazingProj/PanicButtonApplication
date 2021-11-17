@@ -13,4 +13,6 @@ interface Observer {
      * @param context - the activity we are doing the notifications
      */
     fun update(context : Context)
+
+    fun emergencySignalHasSent()
 }
