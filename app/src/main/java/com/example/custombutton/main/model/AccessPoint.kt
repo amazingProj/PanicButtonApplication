@@ -1,6 +1,6 @@
 package com.example.custombutton.main.model
 
-class AccessPoint (){
+class AccessPoint {
     private var ipAddress : Int? = null
     private var mac : String? = null
     private var networkId : Int? = null
@@ -25,7 +25,7 @@ class AccessPoint (){
         networkId = _networkId
     }
 
-    fun setHummanReadableRssi(_humanReadableRssi : Int){
+    fun setHumanReadableRssi(_humanReadableRssi : Int){
         humanReadableRssi = _humanReadableRssi
     }
 

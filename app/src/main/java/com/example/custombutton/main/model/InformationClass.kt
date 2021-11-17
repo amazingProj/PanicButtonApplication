@@ -2,7 +2,7 @@ package com.example.custombutton.main.model
 
 class InformationClass {
     private var isAlarmed : Boolean? = null
-    private var accessPoints : ArrayList<AccessPoint>? = ArrayList<AccessPoint>()
+    private var accessPoints : ArrayList<AccessPoint>? = ArrayList()
 
     init {
         isAlarmed = false
