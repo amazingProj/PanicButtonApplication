@@ -6,6 +6,8 @@ import com.example.custombutton.main.ui.TextFeedbackClass
 
 /**
  * represents event handler of all his observers
+ *
+ * this class handle the calls when the emergency button is pressed
  */
 class EventHandler
 /**
@@ -14,16 +16,6 @@ class EventHandler
 {
     /********** field **********/
     private var observers : MutableList<Observer> = ArrayList()
-
-    /********** getter **********/
-
-    /**
-     * getter of mutable list
-     * @return a mutable list of observers
-     */
-    fun getObservers(): MutableList<Observer>? {
-        return observers
-    }
 
     /********** functions ***********/
 
@@ -36,11 +28,21 @@ class EventHandler
     }
 
     /**
+     * adds many observers to event handler
+     * @param _observers - many classes that implement the observer interface
+     */
+    fun attachManyObservers(vararg  _observers : Observer){
+        for (_observer in _observers){
+            attachObserver(_observer)
+        }
+    }
+
+    /**
      * notifies all observers
      * @param context - the activity within we do that notify
      */
     fun notifyALlObservers(context : Context){
-        for(observer : Observer in observers!!){
+        for(observer : Observer in observers){
             observer.update(context)
         }
     }

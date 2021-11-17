@@ -30,7 +30,7 @@
         android:shadowDy="1"
         android:shadowRadius="0.6"
         android:textColorHighlight="@color/black"/>
-
+<!--
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -54,6 +54,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.155" />
-
+-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
