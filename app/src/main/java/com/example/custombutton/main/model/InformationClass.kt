@@ -3,6 +3,7 @@ package com.example.custombutton.main.model
 class InformationClass {
     private var isAlarmed : Boolean? = null
     private var accessPoints : ArrayList<AccessPoint>? = ArrayList()
+    private var macPhone : String? = null
 
     init {
         isAlarmed = false
@@ -22,6 +23,10 @@ class InformationClass {
 
     fun addAccessPoint(accessPoint: AccessPoint){
         accessPoints?.add(accessPoint)
+    }
+
+    fun setMac(_mac : String){
+        macPhone = _mac
     }
 
     override fun toString(): String {

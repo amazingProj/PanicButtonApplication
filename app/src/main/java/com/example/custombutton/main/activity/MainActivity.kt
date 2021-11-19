@@ -44,12 +44,13 @@ class MainActivity : AppCompatActivity() {
      * delays contstants
      */
     private val QUICKLY_RUNNING_QUATER_SEC = 250
-    private val HALF_MINUTE_MILI_SEC = 3000
+    private val HALF_MINUTE_MILI_SEC = 30000
+    private val FIVE_SECONDS = 5000
 
     /**
      * that property responsible for the delay
      */
-    private val delay : Int = HALF_MINUTE_MILI_SEC
+    private val delay : Int = HALF_MINUTE_MILI_SEC + FIVE_SECONDS
 
     /**
      * creates ui of the screen which in activity_main
@@ -78,33 +79,19 @@ class MainActivity : AppCompatActivity() {
                 var wifiManager = applicationContext.getSystemService(android.content.Context.WIFI_SERVICE) as WifiManager?
                 var wifiInfo = wifiManager!!.getConnectionInfo()
                 val singleton : InformationClass = InformationClass.instance
-                wifiManager.startScan()
-                val wifiScanReceiver = object : BroadcastReceiver() {
-
-                    override fun onReceive(context: Context, intent: Intent) {
-                        val success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false)
-                        if (success) {
-                            scanSuccess(wifiManager)
-                        } else {
-                            scanFailure(wifiManager)
-                        }
+                var bool : Boolean = wifiManager.startScan()
+                if (bool){
+                    wifiManager.scanResults.forEach{
+                        var accessPoint : AccessPoint = AccessPoint()
+                        accessPoint.setFrequency(it.frequency)
+                        accessPoint.setBssid(it.BSSID)
+                        accessPoint.setSsid(it.SSID)
+                        accessPoint.setRssi(it.level)
+                        singleton.addAccessPoint(accessPoint)
                     }
                 }
-                var accessPoint : AccessPoint = AccessPoint()
-                //Log.d("first acsses point", wifiManager.scanResults.get(0).frequency.toString())
-                //Log.d("secon acsses point", wifiManager.scanResults.get(1).frequency.toString())
-                var rssi : Int = wifiInfo.rssi
-                var ip : Int = wifiInfo.ipAddress
-                var mac : String = wifiInfo.macAddress
-                var id : Int = wifiInfo.networkId
-                var freq : Int = wifiInfo.getFrequency()
-                accessPoint.setRssi(rssi)
-                accessPoint.setIpAddress(ip)
-                accessPoint.setMac(mac)
-                accessPoint.setFrequency(freq)
-                singleton.addAccessPoint(accessPoint)
-                Log.v("singleton", singleton.toString())
                 val mSocket = SocketHandler.getSocket()
+                singleton.setMac(getMac(applicationContext))
                 mSocket.emit("wifiInformation", singleton)
                 handler.postDelayed(this, Integer.toUnsignedLong(delay))
             }
@@ -133,5 +120,11 @@ class MainActivity : AppCompatActivity() {
         // consider using old scan results: these are the OLD results!
         val results = wifiManager.scanResults
         Log.d("scans failed",results.toString())
+    }
+
+    fun getMac(context: Context): String {
+        val manager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val info = manager.connectionInfo
+        return info.macAddress.toUpperCase()
     }
 }

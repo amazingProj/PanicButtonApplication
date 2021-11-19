@@ -1,9 +1,8 @@
 package com.example.custombutton.main.model
 
 class AccessPoint {
-    private var ipAddress : Int? = null
-    private var mac : String? = null
-    private var networkId : Int? = null
+    private var SSID : String? = null
+    private var BSSID : String? = null
     private var humanReadableRssi : Int? = null
     private var frequency : Int? = null
     private var rssi : Int? = null
@@ -13,16 +12,12 @@ class AccessPoint {
         rssi = _rssi
     }
 
-    fun setIpAddress(_ip : Int) {
-        ipAddress = _ip
+    fun setSsid(_ssid : String) {
+        SSID = _ssid
     }
 
-    fun setMac(_mac : String){
-        mac = _mac
-    }
-
-    fun setNetworkId(_networkId : Int){
-        networkId = _networkId
+    fun setBssid(_bssid : String){
+        BSSID = _bssid
     }
 
     fun setHumanReadableRssi(_humanReadableRssi : Int){
@@ -34,8 +29,8 @@ class AccessPoint {
     }
 
     override fun toString(): String {
-        return "Rssi is $rssi \nip is $ipAddress\n" +
-                "mac is $mac\nnetwork id is $networkId\n freq is $frequency"
+        return "Rssi is $rssi \nssid is $SSID\n" +
+                "\nbssid id is $BSSID\n freq is $frequency"
 
     }
 
