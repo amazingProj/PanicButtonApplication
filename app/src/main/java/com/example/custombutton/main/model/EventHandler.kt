@@ -46,4 +46,14 @@ class EventHandler
             observer.update(context)
         }
     }
+
+    /**
+     * notify all observer turn off the alarm
+     * when the alarm is off this will be called
+     */
+    fun notifyAllObserverEmergencySignal(){
+        for(observer : Observer in observers){
+            observer.emergencySignalHasSent()
+        }
+    }
 }

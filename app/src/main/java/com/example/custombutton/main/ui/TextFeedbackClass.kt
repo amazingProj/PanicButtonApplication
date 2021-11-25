@@ -64,7 +64,8 @@ class TextFeedbackClass
         }
     }
 
+    @Override
     override fun emergencySignalHasSent() {
-        TODO("Not yet implemented")
+        isAlarmOn = false
     }
 }

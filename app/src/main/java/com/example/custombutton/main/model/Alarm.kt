@@ -13,7 +13,10 @@ class Alarm
  * constructs an alarm class by an event handler which it relates to it
  * @param eventHandler - a related event handler class
  */(eventHandler: EventHandler) : Observer{
+    // when it is alarmed make this true otherwise false
     private var isAlarmOn : Boolean? = null
+
+    // media player rings the alarm to better locate the person
     private var media: MediaPlayer? = MediaPlayer()
 
     init {
@@ -31,7 +34,9 @@ class Alarm
         }
     }
 
+    @Override
     override fun emergencySignalHasSent() {
-        TODO("Not yet implemented")
+        isAlarmOn = false
+        media?.stop()
     }
 }

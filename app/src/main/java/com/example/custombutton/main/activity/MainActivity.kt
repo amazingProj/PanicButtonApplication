@@ -23,6 +23,7 @@ import android.net.wifi.WifiInfo
 import android.R.attr.delay
 import android.widget.Toast
 import android.content.Context
+import com.example.custombutton.main.service.SocketSender
 
 
 /**
@@ -33,12 +34,12 @@ class MainActivity : AppCompatActivity() {
     /**
      * event handler for handeling all the event when user hit the panic button
      */
-    private var eventHandler : EventHandler = EventHandler()
+    private var eventHandler: EventHandler = EventHandler()
 
     /**
      * handler class responsible for to do certain task every x seconds
      */
-    private var handler : Handler = Handler()
+    private var handler: Handler = Handler()
 
     /**
      * delays contstants
@@ -50,7 +51,14 @@ class MainActivity : AppCompatActivity() {
     /**
      * that property responsible for the delay
      */
-    private val delay : Int = HALF_MINUTE_MILI_SEC + FIVE_SECONDS
+    private val delay: Int = HALF_MINUTE_MILI_SEC
+
+    /**
+     * path for sending information routes
+     */
+    private val routePathWifiAccessPoint = "wifiInformation"
+
+    private val routePathMacAddress = "macAddress"
 
     /**
      * creates ui of the screen which in activity_main
@@ -61,25 +69,35 @@ class MainActivity : AppCompatActivity() {
 
         // attach alarm and text feedback to event handler class
 
-        eventHandler.attachManyObservers(Alarm(eventHandler), TextFeedbackClass(eventHandler,this),
-            EmergencySignal(eventHandler));
+        eventHandler.attachManyObservers(
+            Alarm(eventHandler), TextFeedbackClass(eventHandler, this),
+            EmergencySignal(eventHandler)
+        );
 
-        // makes a connection with certain server with socket.io
-        SocketHandler.setSocket()
-        SocketHandler.establishConnection()
+        // create an socket.io connection
+        SocketSender.createConnection()
+        // send the mac address of the device to the server
+        SocketSender.sendDataToServer(routePathMacAddress, getMac(applicationContext))
+
+        // setting the singleton object with the mac address of the device
+        val singleton: InformationClass = InformationClass.instance
+        singleton.setMac(getMac(applicationContext))
     }
 
     /**
      * sending the location each of x seconds
      */
     override fun onResume() {
+        // here we delayed the on resume function
         handler.postDelayed(object : Runnable {
             override fun run() {
-
+                // getting the wifi manger class
                 var wifiManager = applicationContext.getSystemService(android.content.Context.WIFI_SERVICE) as WifiManager?
                 var wifiInfo = wifiManager!!.getConnectionInfo()
                 val singleton : InformationClass = InformationClass.instance
                 var bool : Boolean = wifiManager.startScan()
+
+                // adding into singleton the access points that were found
                 if (bool){
                     wifiManager.scanResults.forEach{
                         var accessPoint : AccessPoint = AccessPoint()
@@ -90,14 +108,22 @@ class MainActivity : AppCompatActivity() {
                         singleton.addAccessPoint(accessPoint)
                     }
                 }
-                val mSocket = SocketHandler.getSocket()
-                singleton.setMac(getMac(applicationContext))
-                mSocket.emit("wifiInformation", singleton)
+
+                Log.d("size", wifiManager.scanResults.size.toString())
+                Log.d("singleton", singleton.toString())
+
+                // sending the data to server
+                SocketSender.sendDataToServer(routePathWifiAccessPoint, singleton.toSend());
+
+                // deltes all the access points from singleton
+                singleton.newAccessPoints()
                 handler.postDelayed(this, Integer.toUnsignedLong(delay))
             }
         }, Integer.toUnsignedLong(delay))
         super.onResume()
     }
+
+    /************************* Functions *****************************/
 
     /**
      * notifies all observers of eventHandler
@@ -105,23 +131,15 @@ class MainActivity : AppCompatActivity() {
      * @notice we must view parameter because this is how it defines
      *         in activity_main.xml with the view/button
      */
-    fun notifyObservers(view : View) {
+    fun notifyObservers(view: View) {
         eventHandler.notifyALlObservers(applicationContext)
     }
 
-    private fun scanSuccess(wifiManager: WifiManager) {
-        val results = wifiManager.scanResults
-        Log.d("scans",results.get(0).frequency.toString())
-
-    }
-
-    private fun scanFailure(wifiManager: WifiManager) {
-        // handle failure: new scan did NOT succeed
-        // consider using old scan results: these are the OLD results!
-        val results = wifiManager.scanResults
-        Log.d("scans failed",results.toString())
-    }
-
+    /**
+     * gets the mac address of the device for identify goals
+     * @param context - the application context
+     * @return a string represents the mac address of the device
+     */
     fun getMac(context: Context): String {
         val manager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
         val info = manager.connectionInfo

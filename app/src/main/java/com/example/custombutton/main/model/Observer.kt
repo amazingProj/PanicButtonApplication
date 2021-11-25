@@ -14,5 +14,9 @@ interface Observer {
      */
     fun update(context : Context)
 
+    /**
+     * updates observer when the alarmed is off
+     * @see Observer.update - which turn on the alarm
+     */
     fun emergencySignalHasSent()
 }
