@@ -15,12 +15,13 @@ class EmergencySignal
  * which it relates to it
  * @param eventHandler - a related event handler class
  */(eventHandler: EventHandler) : Observer {
+    private var isAlarmOn : Boolean = false
     // the route path of the sent information
-    private val routePathWifiAccessPoint = "wifiInformation"
+    private val routePathWifiAccessPoint = "panic-signal"
 
     // in miliseconds for delaying some tasks
     private val TWO_SECONDS = 2000
-    private val TWO_MINUTES_DELAY = 1200000
+    private val TWO_MINUTES_DELAY = 120000
 
     /**
      * handler class responsible for to do certain task every x seconds
@@ -38,26 +39,40 @@ class EmergencySignal
     @Synchronized
     @Override
     override fun update(context: Context) {
-        val singleton: InformationClass = InformationClass.instance
-        singleton.setIsAlarmed(true)
-        var isSentSucceded = false
+        if (!isAlarmOn){
+            val info = InformationClass.instance
+            info.setIsAlarmed(true)
 
-        /*
-        while (isSentSucceded) {
-            handler.postDelayed(object : Runnable {
-                override fun run() {
-                    isSentSucceded = SocketSender.sendDataToServer(
-                        routePathWifiAccessPoint,
-                        singleton.toString()
-                    );
+            var wifiManager = context.getSystemService(android.content.Context.WIFI_SERVICE) as WifiManager?
+            var wifiInfo = wifiManager!!.getConnectionInfo()
+            var bool : Boolean = wifiManager.startScan()
+
+            // adding into singleton the access points that were found
+            if (bool){
+                wifiManager.scanResults.forEach{
+                    var accessPoint : AccessPoint = AccessPoint()
+                    accessPoint.setFrequency(it.frequency)
+                    accessPoint.setBssid(it.BSSID)
+                    accessPoint.setSsid(it.SSID)
+                    accessPoint.setRssi(it.level)
+                    info.addAccessPoint(accessPoint)
                 }
-            }, Integer.toUnsignedLong(TWO_SECONDS))
+            }
+
+            SocketSender.sendDataToServer(
+                routePathWifiAccessPoint,
+                info.toSend()
+            );
+
+            info.newAccessPoints()
+
+            isAlarmOn = true
+
+            // when it succeeded then do that
+            handler.postDelayed({
+                newEventHandler?.notifyAllObserverEmergencySignal()
+            }, TWO_MINUTES_DELAY.toLong())
         }
-        */
-        // when it succeeded then do that
-        handler.postDelayed({
-            newEventHandler?.notifyAllObserverEmergencySignal()
-        }, TWO_MINUTES_DELAY.toLong())
     }
 
     @Synchronized
@@ -65,5 +80,6 @@ class EmergencySignal
     override fun emergencySignalHasSent() {
         val singleton: InformationClass = InformationClass.instance
         singleton.setIsAlarmed(false)
+        isAlarmOn = false
     }
 }
