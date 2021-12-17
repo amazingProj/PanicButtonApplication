@@ -1,6 +1,6 @@
 
 
-'''
+```
 const express = require('express'); //requires express module
 const socket = require('socket.io'); //requires socket.io module
 const app = express();
@@ -30,4 +30,4 @@ io.on('connection', (socket) => {
         console.log("emergency signal received " + data + "\n")
     })
 }
-'''
+```
