@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 Log.d("size", wifiManager.scanResults.size.toString())
-                Log.d("singleton", singleton.toString())
+                Log.d("singleton", singleton.toSend())
 
                 // sending the data to server
                 SocketSender.sendDataToServer(routePathWifiAccessPoint, singleton.toSend());

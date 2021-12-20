@@ -1,5 +1,7 @@
 package com.example.custombutton.main.model
 
+import com.google.gson.Gson
+
 /**
  * class represents essential values which were gotten from access point device
  */
@@ -12,6 +14,7 @@ class AccessPoint {
     private var frequency : Int? = null
     private var rssi : Int? = null
 
+    val gson = Gson()
 /*************** Setters ***************/
 
     /**
@@ -59,7 +62,7 @@ class AccessPoint {
             "Bssid" to BSSID,
             "frequency" to frequency
         )
-        return dict.toString()
+        return gson.toJson(dict).toString()
     }
 
     override fun toString(): String {

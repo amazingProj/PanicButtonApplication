@@ -1,5 +1,7 @@
 package com.example.custombutton.main.model
 
+import com.google.gson.Gson
+
 /**
  * class represents the information that was collected from
  * actual wifi access points sscan with the android device
@@ -13,6 +15,8 @@ class InformationClass {
 
     // mac address of the phone
     private var macPhone : String? = null
+
+    val gson = Gson()
 
     init {
         isAlarmed = false
@@ -73,7 +77,7 @@ class InformationClass {
         result["isAlarmedOn"] = isAlarmed.toString()
         result["macPhone"] = macPhone.toString()
         result["NumberOfAccessPoints"] = accessPoints!!.size.toString()
-        return result.toString()
+        return gson.toJson(result).toString()
     }
 
     @Override

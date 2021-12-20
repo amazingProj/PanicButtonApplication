@@ -11,7 +11,7 @@ import java.net.URISyntaxException
 object SocketHandler {
 
     lateinit var mSocket: Socket
-    private const val BASE_URL : String = "http://10.100.102.9:3000"
+    private const val BASE_URL : String = "http://10.7.10.196:3000"
 
     @Synchronized
     fun setSocket() {
