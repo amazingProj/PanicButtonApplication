@@ -76,12 +76,6 @@ class MainActivity : AppCompatActivity() {
 
         // create an socket.io connection
         SocketSender.createConnection()
-        // send the mac address of the device to the server
-        SocketSender.sendDataToServer(routePathMacAddress, getMac(applicationContext))
-
-        // setting the singleton object with the mac address of the device
-        val singleton: InformationClass = InformationClass.instance
-        singleton.setMac(getMac(applicationContext))
     }
 
     /**
@@ -133,16 +127,5 @@ class MainActivity : AppCompatActivity() {
      */
     fun notifyObservers(view: View) {
         eventHandler.notifyALlObservers(applicationContext)
-    }
-
-    /**
-     * gets the mac address of the device for identify goals
-     * @param context - the application context
-     * @return a string represents the mac address of the device
-     */
-    fun getMac(context: Context): String {
-        val manager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        val info = manager.connectionInfo
-        return info.macAddress.toUpperCase()
     }
 }

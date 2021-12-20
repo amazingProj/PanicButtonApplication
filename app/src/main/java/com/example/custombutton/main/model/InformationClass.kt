@@ -13,9 +13,6 @@ class InformationClass {
     // a list off all access points in a scan
     private var accessPoints : ArrayList<AccessPoint>? = ArrayList()
 
-    // mac address of the phone
-    private var macPhone : String? = null
-
     val gson = Gson()
 
     init {
@@ -47,14 +44,6 @@ class InformationClass {
     }
 
     /**
-     * setter of mac address
-     * @param _mac - a string of mac address
-     */
-    fun setMac(_mac : String){
-        macPhone = _mac
-    }
-
-    /**
      * clears all the access points from the singleton
      */
     fun newAccessPoints(){
@@ -75,7 +64,6 @@ class InformationClass {
             accessPointNumber = string + counter.toString()
         }
         result["isAlarmedOn"] = isAlarmed.toString()
-        result["macPhone"] = macPhone.toString()
         result["NumberOfAccessPoints"] = accessPoints!!.size.toString()
         return gson.toJson(result).toString()
     }
