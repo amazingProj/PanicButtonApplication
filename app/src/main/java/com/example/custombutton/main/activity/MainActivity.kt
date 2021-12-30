@@ -128,4 +128,8 @@ class MainActivity : AppCompatActivity() {
     fun notifyObservers(view: View) {
         eventHandler.notifyALlObservers(applicationContext)
     }
+
+    fun movetoSettingActivity(view: View){
+        startActivity(Intent(this@MainActivity, SettingActivity::class.java))
+    }
 }

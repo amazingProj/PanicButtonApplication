@@ -30,30 +30,19 @@
         android:shadowDy="1"
         android:shadowRadius="0.6"
         android:textColorHighlight="@color/black"/>
-<!--
-    <TextView
-        android:id="@+id/textView"
+
+    <Button
+        android:id="@+id/setting_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="RSSI"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.667"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.126" />
+        app:layout_constraintVertical_bias="0.0"
+        android:background="@drawable/setting_icon"
+        android:onClick="movetoSettingActivity"/>
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="IP"
-        app:layout_constraintBottom_toBottomOf="@id/button"
-        app:layout_constraintEnd_toEndOf="@id/button"
-        app:layout_constraintHorizontal_bias="0.242"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.155" />
--->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
