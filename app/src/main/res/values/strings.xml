@@ -2,4 +2,9 @@
 <resources>
     <string name="app_name">לחצן מצוקה</string>
     <string name="emergency">SOS</string>
+    <string name="details">IP שנה את כתובת ה</string>
+    <string name="setting_hebrew">הגדרות</string>
+    <string name="all_fine_hebrew">הכתובת הוגדרה בהצלחה</string>
+    <string name="format">*.*.*.* פורמט המספר</string>
+    <string name="not_all_fine">כתובת לא בפורמט הנכון</string>
 </resources>

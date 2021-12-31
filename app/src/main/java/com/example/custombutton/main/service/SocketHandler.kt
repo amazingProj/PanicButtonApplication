@@ -11,7 +11,13 @@ import java.net.URISyntaxException
 object SocketHandler {
 
     lateinit var mSocket: Socket
-    private const val BASE_URL : String = "http://10.7.10.59:3000"
+    private var PORT : String = "3000"
+    private var IP_ADDRESS = "10.7.10.59"
+    const val httpPreString = "http://"
+    const val twoDotsToken = ":"
+    private var BASE_URL : String = "http://10.100.102.9:3000"
+
+    /************************* Setters and Getters ******************/
 
     @Synchronized
     fun setSocket() {
@@ -28,12 +34,44 @@ object SocketHandler {
     }
 
     @Synchronized
+    fun setPort(_PORT : String){
+        PORT = _PORT
+        updateBaseUrl()
+    }
+
+    @Synchronized
+    fun setIpAddress(ipAddress : String){
+        IP_ADDRESS = ipAddress
+        updateBaseUrl()
+    }
+
+    @Synchronized
+    fun setBaseUrl(baseUrl : String){
+        // TODO: check here if valid url
+        BASE_URL = baseUrl
+    }
+
+    @Synchronized
+    fun getBaseUrl() : String{
+        return BASE_URL
+    }
+
+    @Synchronized
+    fun updateBaseUrl(){
+        BASE_URL = httpPreString + IP_ADDRESS + twoDotsToken + PORT
+    }
+
+    /****************************** Functions *************************/
+
+    @Synchronized
     fun establishConnection() {
         mSocket.connect()
     }
 
     @Synchronized
     fun closeConnection() {
-        mSocket.disconnect()
+        if (mSocket.isActive){
+            mSocket.disconnect()
+        }
     }
 }

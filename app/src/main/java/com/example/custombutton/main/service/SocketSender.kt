@@ -21,4 +21,13 @@ object SocketSender {
         mSocket.emit(event, argument)
         return true
     }
+
+    @Synchronized
+    fun newServerConnection(){
+        // close the former connection
+        SocketHandler.closeConnection()
+        // makes a connection with certain server with socket.io
+        SocketHandler.setSocket()
+        SocketHandler.establishConnection()
+    }
 }
