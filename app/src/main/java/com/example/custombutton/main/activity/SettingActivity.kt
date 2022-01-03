@@ -1,5 +1,6 @@
 package com.example.custombutton.main.activity
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -22,7 +23,8 @@ class SettingActivity : AppCompatActivity() {
         //
         notice.alpha = INVISIBLE
         val editIPAddress : EditText = findViewById(R.id.editTextTextIPAddress)
-        editIPAddress.hint = SocketHandler.getBaseUrl()
+        editIPAddress.hint = SocketHandler.getIpAddress()
+        editIPAddress.setRawInputType(Configuration.KEYBOARD_12KEY);
         editIPAddress.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
@@ -51,9 +53,7 @@ class SettingActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
-                /*notice.setTextColor(getColor(R.color.black))
-                notice.text = getString(R.string.format)
-                notice.alpha = VISIBLE*/
+
             }
         })
     }

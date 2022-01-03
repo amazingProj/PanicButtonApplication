@@ -15,7 +15,7 @@ object SocketHandler {
     private var IP_ADDRESS = "10.7.10.59"
     const val httpPreString = "http://"
     const val twoDotsToken = ":"
-    private var BASE_URL : String = "http://10.100.102.9:3000"
+    private var BASE_URL : String = "http://10.10.2.2:3000"
 
     /************************* Setters and Getters ******************/
 
@@ -43,6 +43,11 @@ object SocketHandler {
     fun setIpAddress(ipAddress : String){
         IP_ADDRESS = ipAddress
         updateBaseUrl()
+    }
+
+    @Synchronized
+    fun getIpAddress() : String{
+        return IP_ADDRESS
     }
 
     @Synchronized
