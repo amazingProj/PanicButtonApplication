@@ -24,6 +24,12 @@ import android.R.attr.delay
 import android.widget.Toast
 import android.content.Context
 import com.example.custombutton.main.service.SocketSender
+import com.hivemq.client.mqtt.MqttClient
+import com.hivemq.client.mqtt.datatypes.MqttQos
+import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient
+import com.hivemq.client.mqtt.MqttGlobalPublishFilter.ALL;
+import com.hivemq.client.mqtt.mqtt5.Mqtt5Client
+import java.nio.charset.StandardCharsets.UTF_8;
 
 
 /**
@@ -40,6 +46,7 @@ class MainActivity : AppCompatActivity() {
      * handler class responsible for to do certain task every x seconds
      */
     private var handler: Handler = Handler()
+   // lateinit var client : Mqtt5Client
 
     /**
      * delays contstants
@@ -47,6 +54,7 @@ class MainActivity : AppCompatActivity() {
     private val QUICKLY_RUNNING_QUATER_SEC = 250
     private val HALF_MINUTE_MILI_SEC = 30000
     private val FIVE_SECONDS = 5000
+    val topic = "mqtt/android/wifi/messages"
 
     /**
      * that property responsible for the delay
@@ -59,6 +67,8 @@ class MainActivity : AppCompatActivity() {
     private val routePathWifiAccessPoint = "wifiInformation"
 
     private val routePathMacAddress = "macAddress"
+
+    private var newClient : Mqtt5BlockingClient ?= null
 
     /**
      * creates ui of the screen which in activity_main
@@ -76,6 +86,56 @@ class MainActivity : AppCompatActivity() {
 
         // create an socket.io connection
         SocketSender.createConnection()
+
+
+        var host = "712d6a94edd544ddac8b5c44600f18d3.s1.eu.hivemq.cloud";
+        var username = "Esp32";
+        var password = "Esp32Asaf";
+
+        /**
+         * Building the client with ssl.
+         */
+        var client= MqttClient.builder()
+            .useMqttVersion5()
+            .serverHost(host)
+            .serverPort(8884)
+            .sslWithDefaultConfig()
+            .webSocketConfig()
+            .serverPath("mqtt")
+            .applyWebSocketConfig()
+            .buildBlocking();
+
+        /**
+         * Connect securely with username, password.
+         */
+        client.connectWith()
+            .simpleAuth()
+            .username(username)
+            .password(UTF_8.encode(password))
+            .applySimpleAuth()
+            .send();
+
+        System.out.println("Connected successfully");
+
+        /**
+         * Subscribe to the topic "my/test/topic" with qos = 2 and print the received message.
+         */
+        client.subscribeWith()
+            .topicFilter("my/test/topic")
+            .qos(MqttQos.EXACTLY_ONCE)
+            .send();
+
+        /**
+         * Set a callback that is called when a message is received (using the async API style).
+         * Then disconnect the client after a message was received.
+         */
+        client.toAsync().publishes(ALL, fun (publish) {
+            print("Received message: " + publish + " -> " + UTF_8.decode(publish.payload.get()));
+
+            client.disconnect();
+        });
+
+        newClient = client
     }
 
     /**
@@ -108,6 +168,15 @@ class MainActivity : AppCompatActivity() {
 
                 // sending the data to server
                 SocketSender.sendDataToServer(routePathWifiAccessPoint, singleton.toSend());
+
+                /**
+                 * Publish the wifi scan to mqtt broker
+                 */
+                newClient?.publishWith()
+                    ?.topic(topic)
+                    ?.payload(UTF_8.encode(singleton.toSend()))
+                    ?.qos(MqttQos.EXACTLY_ONCE)
+                    ?.send();
 
                 // deltes all the access points from singleton
                 singleton.newAccessPoints()

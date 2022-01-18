@@ -31,6 +31,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    packagingOptions {
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/io.netty.versions.properties'
+    }
 }
 
 dependencies {
@@ -46,7 +51,6 @@ dependencies {
     implementation('io.socket:socket.io-client:2.0.0') {
         exclude group: 'org.json', module: 'json'
     }
-    implementation('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
-        exclude module: 'support-v4'
-    }
+    implementation 'com.hivemq:hivemq-mqtt-client:1.2.2'
+    implementation(platform("com.hivemq:hivemq-mqtt-client-websocket:1.2.2"))
 }
