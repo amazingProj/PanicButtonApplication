@@ -2,5 +2,5 @@
 <!-- make the shape of the button circle and red -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
     <corners android:radius="9999dp"/>
-    <solid android:color="@color/red"></solid>
+    <solid android:color="@color/red"/>
 </shape>

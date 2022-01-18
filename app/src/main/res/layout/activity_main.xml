@@ -21,7 +21,7 @@
         android:textAllCaps="false"
         android:text="@string/emergency"
         android:textColor="@color/white"
-        android:textSize="70dp"
+        android:textSize="70sp"
         android:background="@drawable/custom_button"
         android:onClick="notifyObservers"
         android:outlineSpotShadowColor="@color/black"
@@ -34,15 +34,16 @@
     <Button
         android:id="@+id/setting_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="64sp"
+        android:background="@drawable/setting_icon"
+        android:contentDescription="@string/content_label_of_setting_button"
+        android:onClick="movetoSettingActivity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        android:background="@drawable/setting_icon"
-        android:onClick="movetoSettingActivity"/>
+        app:layout_constraintVertical_bias="0.005" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

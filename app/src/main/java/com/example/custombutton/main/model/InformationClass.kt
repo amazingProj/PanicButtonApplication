@@ -9,14 +9,16 @@ import com.google.gson.Gson
 class InformationClass {
     // boolean variable tells us if the alarm is on or off
     private var isAlarmed : Boolean? = null
-
+    //private var macAdderess : String = String()
     // a list off all access points in a scan
     private var accessPoints : ArrayList<AccessPoint>? = ArrayList()
+    private var IdNumber : Int = 2023
 
     val gson = Gson()
 
     init {
         isAlarmed = false
+        //macAdderess = DeviceInfo.getMacAddress()
     }
     /**
      * singleton objects whose properties
@@ -50,6 +52,14 @@ class InformationClass {
         accessPoints?.clear()
     }
 
+    fun setNewId(id : Int){
+        IdNumber = id
+    }
+
+    fun getSpecialId() : Int{
+        return IdNumber
+    }
+
     /**
      * formatting all the information of a scan of wifi access points
      */
@@ -65,6 +75,8 @@ class InformationClass {
         }
         result["isAlarmedOn"] = isAlarmed.toString()
         result["NumberOfAccessPoints"] = accessPoints!!.size.toString()
+        //result["deviceMacAddress"] = macAdderess
+        result["specialIdNumber"] = IdNumber
         return gson.toJson(result).toString()
     }
 

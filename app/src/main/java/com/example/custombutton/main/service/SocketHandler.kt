@@ -10,11 +10,11 @@ import java.net.URISyntaxException
  */
 object SocketHandler {
 
-    lateinit var mSocket: Socket
+    private lateinit var mSocket: Socket
     private var PORT : String = "3000"
     private var IP_ADDRESS = "10.7.10.59"
-    const val httpPreString = "http://"
-    const val twoDotsToken = ":"
+    private const val httpPreString = "http://"
+    private const val twoDotsToken = ":"
     private var BASE_URL : String = "http://10.10.2.2:3000"
 
     /************************* Setters and Getters ******************/

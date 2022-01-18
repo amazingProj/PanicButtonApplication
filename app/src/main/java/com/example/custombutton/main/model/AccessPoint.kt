@@ -14,7 +14,7 @@ class AccessPoint {
     private var frequency : Int? = null
     private var rssi : Int? = null
 
-    val gson = Gson()
+    private val gson = Gson()
 /*************** Setters ***************/
 
     /**

@@ -37,6 +37,10 @@ class EventHandler
         }
     }
 
+    fun removeObserver(_observer: Observer){
+        observers.remove(_observer)
+    }
+
     /**
      * notifies all observers
      * @param context - the activity within we do that notify

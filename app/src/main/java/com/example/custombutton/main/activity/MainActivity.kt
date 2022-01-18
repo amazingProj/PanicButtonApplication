@@ -131,5 +131,6 @@ class MainActivity : AppCompatActivity() {
 
     fun movetoSettingActivity(view: View){
         startActivity(Intent(this@MainActivity, SettingActivity::class.java))
+        finish()
     }
 }

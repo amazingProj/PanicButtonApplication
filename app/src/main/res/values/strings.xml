@@ -7,4 +7,13 @@
     <string name="all_fine_hebrew">הכתובת הוגדרה בהצלחה</string>
     <string name="format">*.*.*.* פורמט המספר</string>
     <string name="not_all_fine">כתובת לא בפורמט הנכון</string>
+    <string name="sound_instruction">כבה או הדלק את האזעקה של הכפתור</string>
+    <string name="special_id">שנה את המספר זהות של המכשיר</string>
+    <string name="current_special_id">מספר הנוכחי הוא</string>
+    <string name="content_label_of_setting_button">הגדרות</string>
+    <string name="home_setting">הגדרות כלליות</string>
+    <string name="socketio_setting">Socket.io</string>
+    <string name="mqtt_setting"> MQTT שידור</string>
+    <string name="special_id_instruct">הגדר מספר זיהוי חדש</string>
+    <string name="go_back">חזרה אחורה</string>
 </resources>
