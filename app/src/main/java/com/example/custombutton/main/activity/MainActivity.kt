@@ -170,7 +170,7 @@ class MainActivity : AppCompatActivity() {
                 SocketSender.sendDataToServer(routePathWifiAccessPoint, singleton.toSend());
 
                 /**
-                 * Publish the wifi scan to mqtt broker
+                 * Publish the wifi scan to mqtt broker cloud
                  */
                 newClient?.publishWith()
                     ?.topic(topic)
