@@ -38,27 +38,19 @@ class MainActivity : AppCompatActivity() {
      * handler class responsible for to do certain task every x seconds
      */
     private var handler: Handler = Handler()
-   // lateinit var client : Mqtt5Client
 
-    /**
-     * delays contstants
-     */
-    private val QUICKLY_RUNNING_QUATER_SEC = 250
-    private val HALF_MINUTE_MILI_SEC = 30000
     private val FIVE_SECONDS = 5000
-    val topic = "mqtt/android/wifi/messages"
+    val topic = getString(R.string.publish_to_topic)
 
     /**
      * that property responsible for the delay
      */
-    private val delay: Int = HALF_MINUTE_MILI_SEC
+    private val delay: Int = FIVE_SECONDS
 
     /**
      * path for sending information routes
      */
-    private val routePathWifiAccessPoint = "wifiInformation"
-
-    private val routePathMacAddress = "macAddress"
+    private val routePathWifiAccessPoint = getString(R.string.route_path_wifi_access_spoint)
 
     private var newClient : Mqtt5BlockingClient ?= null
 
@@ -68,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         // attach alarm and text feedback to event handler class
 
@@ -112,7 +105,7 @@ class MainActivity : AppCompatActivity() {
          * Subscribe to the topic "my/test/topic" with qos = 2 and print the received message.
          */
         client.subscribeWith()
-            .topicFilter("my/test/topic")
+            .topicFilter(getString(R.string.acknowledgment_emergency_signal))
             .qos(MqttQos.EXACTLY_ONCE)
             .send();
 
@@ -123,7 +116,7 @@ class MainActivity : AppCompatActivity() {
         client.toAsync().publishes(ALL, fun (publish) {
             print("Received message: " + publish + " -> " + UTF_8.decode(publish.payload.get()));
 
-            client.disconnect();
+            //client.disconnect();
         });
 
         newClient = client

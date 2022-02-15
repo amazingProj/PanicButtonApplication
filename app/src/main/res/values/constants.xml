@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="quater_second_in_milli_sec">250</integer>
+    <integer name="half_minute_mili_sec">30000</integer>
+    <integer name="five_seconds">5000</integer>
+</resources>

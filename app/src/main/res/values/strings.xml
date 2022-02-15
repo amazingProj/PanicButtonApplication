@@ -16,4 +16,7 @@
     <string name="mqtt_setting"> MQTT שידור</string>
     <string name="special_id_instruct">הגדר מספר זיהוי חדש</string>
     <string name="go_back">חזרה אחורה</string>
+    <string name="publish_to_topic">mqtt/android/wifi/messages</string>
+    <string name="acknowledgment_emergency_signal">ack/android</string>
+    <string name="route_path_wifi_access_spoint">"wifiInformation"</string>
 </resources>
