@@ -53,4 +53,5 @@ dependencies {
     }
     implementation 'com.hivemq:hivemq-mqtt-client:1.2.2'
     implementation(platform("com.hivemq:hivemq-mqtt-client-websocket:1.2.2"))
+    implementation 'io.github.cdimascio:java-dotenv:3.0.0'
 }

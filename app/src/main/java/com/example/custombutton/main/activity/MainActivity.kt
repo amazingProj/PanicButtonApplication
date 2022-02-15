@@ -1,15 +1,11 @@
 package com.example.custombutton.main.activity
 
 import com.example.custombutton.main.model.AccessPoint
-import android.content.BroadcastReceiver
+import io.github.cdimascio.dotenv.dotenv
 import android.content.Intent
-import android.content.IntentFilter
-import com.example.custombutton.main.service.SocketHandler
 import com.example.custombutton.main.model.EmergencySignal
-import android.widget.TextView
 import android.util.Log
 import android.os.Handler
-import android.R.attr
 import android.net.wifi.WifiManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,15 +16,11 @@ import com.example.custombutton.main.model.EventHandler
 import com.example.custombutton.main.ui.TextFeedbackClass
 import com.example.custombutton.main.model.InformationClass
 import android.net.wifi.WifiInfo
-import android.R.attr.delay
-import android.widget.Toast
-import android.content.Context
 import com.example.custombutton.main.service.SocketSender
 import com.hivemq.client.mqtt.MqttClient
 import com.hivemq.client.mqtt.datatypes.MqttQos
 import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient
 import com.hivemq.client.mqtt.MqttGlobalPublishFilter.ALL;
-import com.hivemq.client.mqtt.mqtt5.Mqtt5Client
 import java.nio.charset.StandardCharsets.UTF_8;
 
 
@@ -86,7 +78,6 @@ class MainActivity : AppCompatActivity() {
 
         // create an socket.io connection
         SocketSender.createConnection()
-
 
         var host = "712d6a94edd544ddac8b5c44600f18d3.s1.eu.hivemq.cloud";
         var username = "Esp32";
@@ -178,7 +169,7 @@ class MainActivity : AppCompatActivity() {
                     ?.qos(MqttQos.EXACTLY_ONCE)
                     ?.send();
 
-                // deltes all the access points from singleton
+                // deletes all the access points from singleton
                 singleton.newAccessPoints()
                 handler.postDelayed(this, Integer.toUnsignedLong(delay))
             }
