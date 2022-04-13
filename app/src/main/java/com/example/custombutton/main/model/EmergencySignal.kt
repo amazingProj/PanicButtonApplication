@@ -36,7 +36,6 @@ class EmergencySignal
         newEventHandler = eventHandler
     }
 
-    @Synchronized
     @Override
     override fun update(context: Context) {
         if (!isAlarmOn){
@@ -75,7 +74,6 @@ class EmergencySignal
         }
     }
 
-    @Synchronized
     @Override
     override fun emergencySignalHasSent() {
         val singleton: InformationClass = InformationClass.instance

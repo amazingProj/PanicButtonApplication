@@ -19,4 +19,15 @@
     <string name="publish_to_topic">mqtt/android/wifi/messages</string>
     <string name="acknowledgment_emergency_signal">ack/android</string>
     <string name="route_path_wifi_access_spoint">"wifiInformation"</string>
+    <string name="home_page_is_alarm">הפעלת קול בעת לחיצה על הכפתור</string>
+    <string name="home_page_is_toast_msg">האם להפעיל בלחיצה הודעת טוסט</string>
+    <string name="home_page_set_delay">כל כמה זמן לשלוח הודעה שיגרתית</string>
+    <string name="option_1">כל עשר שניות</string>
+    <string name="option_2">כל חצי דקה</string>
+    <string name="option_3">כל דקה</string>
+    <string name="option_4">כל שתי דקה</string>
+    <string name="option_5">כל עשר דקות</string>
+    <string name="option_6">כל חצי שעה</string>
+    <string name="option_7">ללא</string>
+    <string name="show_menu">הודעה שיגרתית</string>
 </resources>

@@ -23,7 +23,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".main.activity.SettingActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <service android:name="org.eclipse.paho.android.service.MqttService" >
         </service>
         <activity

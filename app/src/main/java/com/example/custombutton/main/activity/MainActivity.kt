@@ -38,9 +38,10 @@ class MainActivity : AppCompatActivity() {
      * handler class responsible for to do certain task every x seconds
      */
     private var handler: Handler = Handler()
+   // lateinit var client : Mqtt5Client
 
-    private val FIVE_SECONDS = 5000
-    val topic = getString(R.string.publish_to_topic)
+    private val FIVE_SECONDS = 10000
+    val topic = "mqtt/android/wifi/messages"
 
     /**
      * that property responsible for the delay
@@ -50,7 +51,9 @@ class MainActivity : AppCompatActivity() {
     /**
      * path for sending information routes
      */
-    private val routePathWifiAccessPoint = getString(R.string.route_path_wifi_access_spoint)
+    private val routePathWifiAccessPoint = "wifiInformation"
+
+    private val routePathMacAddress = "macAddress"
 
     private var newClient : Mqtt5BlockingClient ?= null
 
@@ -61,13 +64,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         // attach alarm and text feedback to event handler class
 
         eventHandler.attachManyObservers(
             Alarm(eventHandler), TextFeedbackClass(eventHandler, this),
             EmergencySignal(eventHandler)
         );
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         // create an socket.io connection
         SocketSender.createConnection()
@@ -76,9 +82,9 @@ class MainActivity : AppCompatActivity() {
         var username = "Esp32";
         var password = "Esp32Asaf";
 
-        /**
-         * Building the client with ssl.
-         */
+
+        // Building the client with ssl.
+
         var client= MqttClient.builder()
             .useMqttVersion5()
             .serverHost(host)
@@ -89,9 +95,9 @@ class MainActivity : AppCompatActivity() {
             .applyWebSocketConfig()
             .buildBlocking();
 
-        /**
-         * Connect securely with username, password.
-         */
+
+        //  Connect securely with username, password.
+
         client.connectWith()
             .simpleAuth()
             .username(username)
@@ -99,13 +105,13 @@ class MainActivity : AppCompatActivity() {
             .applySimpleAuth()
             .send();
 
-        System.out.println("Connected successfully");
+        println("Connected successfully");
 
         /**
          * Subscribe to the topic "my/test/topic" with qos = 2 and print the received message.
          */
         client.subscribeWith()
-            .topicFilter(getString(R.string.acknowledgment_emergency_signal))
+            .topicFilter("ack/android")
             .qos(MqttQos.EXACTLY_ONCE)
             .send();
 
@@ -115,8 +121,6 @@ class MainActivity : AppCompatActivity() {
          */
         client.toAsync().publishes(ALL, fun (publish) {
             print("Received message: " + publish + " -> " + UTF_8.decode(publish.payload.get()));
-
-            //client.disconnect();
         });
 
         newClient = client
