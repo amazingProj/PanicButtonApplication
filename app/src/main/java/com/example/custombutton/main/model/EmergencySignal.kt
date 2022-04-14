@@ -42,29 +42,6 @@ class EmergencySignal
             val info = InformationClass.instance
             info.setIsAlarmed(true)
 
-            var wifiManager = context.getSystemService(android.content.Context.WIFI_SERVICE) as WifiManager?
-            var wifiInfo = wifiManager!!.getConnectionInfo()
-            var bool : Boolean = wifiManager.startScan()
-
-            // adding into singleton the access points that were found
-            if (bool){
-                wifiManager.scanResults.forEach{
-                    var accessPoint : AccessPoint = AccessPoint()
-                    accessPoint.setFrequency(it.frequency)
-                    accessPoint.setBssid(it.BSSID)
-                    accessPoint.setSsid(it.SSID)
-                    accessPoint.setRssi(it.level)
-                    info.addAccessPoint(accessPoint)
-                }
-            }
-
-            SocketSender.sendDataToServer(
-                routePathWifiAccessPoint,
-                info.toSend()
-            );
-
-            info.newAccessPoints()
-
             isAlarmOn = true
 
             // when it succeeded then do that

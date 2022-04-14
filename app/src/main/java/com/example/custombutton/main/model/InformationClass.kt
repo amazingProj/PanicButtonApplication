@@ -49,6 +49,9 @@ class InformationClass {
      * clears all the access points from the singleton
      */
     fun newAccessPoints(){
+        if (accessPoints?.isEmpty() == true){
+            return;
+        }
         accessPoints?.clear()
     }
 
@@ -58,6 +61,10 @@ class InformationClass {
 
     fun getSpecialId() : Int{
         return IdNumber
+    }
+
+    fun getNumberOfAccessPoint() : Int? {
+        return accessPoints!!.size
     }
 
     /**

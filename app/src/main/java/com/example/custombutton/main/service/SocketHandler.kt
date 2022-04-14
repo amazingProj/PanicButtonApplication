@@ -62,6 +62,11 @@ object SocketHandler {
     }
 
     @Synchronized
+    fun getPort() : String{
+        return PORT
+    }
+
+    @Synchronized
     fun updateBaseUrl(){
         BASE_URL = httpPreString + IP_ADDRESS + twoDotsToken + PORT
     }

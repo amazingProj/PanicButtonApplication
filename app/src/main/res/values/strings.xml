@@ -30,4 +30,10 @@
     <string name="option_6">כל חצי שעה</string>
     <string name="option_7">ללא</string>
     <string name="show_menu">הודעה שיגרתית</string>
+    <string name="par">
+        Websockets   מעל Mqtt  הפרוטוקול מוגדר ל
+        כתובת השרת המארח היא
+        712d6a94edd544ddac8b5c44600f18d3.s1.eu.hivemq.cloud
+    </string>
+
 </resources>

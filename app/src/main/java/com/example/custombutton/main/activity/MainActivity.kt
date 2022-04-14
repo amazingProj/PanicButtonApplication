@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     private var handler: Handler = Handler()
    // lateinit var client : Mqtt5Client
 
-    private val FIVE_SECONDS = 1000
+    private val FIVE_SECONDS = 5000 * 2
     val topic = "mqtt/android/wifi/messages"
 
     /**
@@ -73,7 +73,8 @@ class MainActivity : AppCompatActivity() {
         // attach alarm and text feedback to event handler class
 
         eventHandler.attachManyObservers(
-            Alarm(eventHandler), TextFeedbackClass(eventHandler, this)
+            Alarm(eventHandler), TextFeedbackClass(eventHandler, this),
+            EmergencySignal(eventHandler)
         );
     }
 
@@ -131,91 +132,55 @@ class MainActivity : AppCompatActivity() {
         newClient = client
     }
 
-    /**
-     * sending the location each of x seconds
-     */
     override fun onResume() {
-        var now = Date(System.currentTimeMillis()).time
-        if (isAlarmed)
-        {
-            val info = InformationClass.instance
-            info.setIsAlarmed(true)
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                val singleton : InformationClass = InformationClass.instance
 
-            var wifiManager = applicationContext.getSystemService(android.content.Context.WIFI_SERVICE) as WifiManager?
-            var wifiInfo = wifiManager!!.getConnectionInfo()
-            val singleton : InformationClass = InformationClass.instance
-            var bool : Boolean = wifiManager.startScan()
+                    // deletes all the access points from singleton
+                    singleton.newAccessPoints()
 
-            // adding into singleton the access points that were found
-            if (bool){
-                wifiManager.scanResults.forEach{
-                    var accessPoint : AccessPoint = AccessPoint()
-                    accessPoint.setFrequency(it.frequency)
-                    accessPoint.setBssid(it.BSSID)
-                    accessPoint.setSsid(it.SSID)
-                    accessPoint.setRssi(it.level)
-                    info.addAccessPoint(accessPoint)
+                // getting the wifi manger class
+                var wifiManager = applicationContext.getSystemService(android.content.Context.WIFI_SERVICE) as WifiManager?
+                var wifiInfo = wifiManager!!.getConnectionInfo()
+
+                var bool : Boolean = wifiManager.startScan()
+
+                // adding into singleton the access points that were found
+                if (bool){
+                    wifiManager.scanResults.forEach{
+                        var accessPoint : AccessPoint = AccessPoint()
+                        accessPoint.setFrequency(it.frequency)
+                        accessPoint.setBssid(it.BSSID)
+                        accessPoint.setSsid(it.SSID)
+                        accessPoint.setRssi(it.level)
+                        singleton.addAccessPoint(accessPoint)
+                    }
                 }
-            }
 
-            SocketSender.sendDataToServer(
-                routePathWifiAccessPoint,
-                info.toSend()
-            );
+                Log.d("size", wifiManager.scanResults.size.toString())
+                Log.d("singleton", singleton.toSend())
 
-            newClient?.publishWith()
-                ?.topic(topic)
-                ?.payload(UTF_8.encode(singleton.toSend()))
-                ?.qos(MqttQos.EXACTLY_ONCE)
-                ?.send();
+                if (singleton.getNumberOfAccessPoint() != 0)
+                {
+                    // Publish the wifi scan to mqtt broker cloud
 
-            info.newAccessPoints()
-            //TimeUnit.MINUTES.sleep(1);
-            eventHandler?.notifyAllObserverEmergencySignal()
-        }
-        else if ((now - timestp!! > delay) && isRelevant)
-        {
-            Log.d("Hii", "hii1")
-            timestp = now;
-            // getting the wifi manger class
-            var wifiManager = applicationContext.getSystemService(android.content.Context.WIFI_SERVICE) as WifiManager?
-            var wifiInfo = wifiManager!!.getConnectionInfo()
-            val singleton : InformationClass = InformationClass.instance
-            var bool : Boolean = wifiManager.startScan()
+                    newClient?.publishWith()
+                        ?.topic(topic)
+                        ?.payload(UTF_8.encode(singleton.toSend()))
+                        ?.qos(MqttQos.EXACTLY_ONCE)
+                        ?.send();
 
-            // adding into singleton the access points that were found
-            if (bool){
-                wifiManager.scanResults.forEach{
-                    var accessPoint : AccessPoint = AccessPoint()
-                    accessPoint.setFrequency(it.frequency)
-                    accessPoint.setBssid(it.BSSID)
-                    accessPoint.setSsid(it.SSID)
-                    accessPoint.setRssi(it.level)
-                    singleton.addAccessPoint(accessPoint)
+                    // sending the data to server
+                    SocketSender.sendDataToServer(routePathWifiAccessPoint, singleton.toSend());
                 }
+
+                handler.postDelayed(this, Integer.toUnsignedLong(delay))
             }
-
-            Log.d("size", wifiManager.scanResults.size.toString())
-            Log.d("singleton", singleton.toSend())
-
-            // sending the data to server
-            SocketSender.sendDataToServer(routePathWifiAccessPoint, singleton.toSend());
-
-            /**
-             * Publish the wifi scan to mqtt broker cloud
-             */
-            newClient?.publishWith()
-                ?.topic(topic)
-                ?.payload(UTF_8.encode(singleton.toSend()))
-                ?.qos(MqttQos.EXACTLY_ONCE)
-                ?.send();
-
-            // deletes all the access points from singleton
-            singleton.newAccessPoints()
-
-        }
+        }, Integer.toUnsignedLong(delay))
         super.onResume()
     }
+
 
     /************************* Functions *****************************/
 
