@@ -19,9 +19,6 @@ class SettingActivity : AppCompatActivity() {
                 R.id.home -> {
                     supportFragmentManager.beginTransaction().replace(R.id.fragment_layout, HomeFragment()).commit()
                 }
-                R.id.socketio -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragment_layout, SocketFragment()).commit()
-                }
                 R.id.mqtt -> {
                     supportFragmentManager.beginTransaction().replace(R.id.fragment_layout, MqttFragment()).commit()
                 }

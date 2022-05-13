@@ -24,6 +24,28 @@
             android:contentDescription="@string/go_back" />
 
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:text="הגדרות כלליות"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:layout_marginRight="10sp"/>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="עת לחיצה על הכפתור מושמע צליל בתדר גבוהה, באפשרותך לכבותו"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:fontFamily="@font/roboto"
+        android:layout_marginRight="10sp"/>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20sp" />
     <LinearLayout
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
@@ -38,6 +60,21 @@
             android:checked="true"
             android:text="@string/home_page_is_alarm" />
     </LinearLayout>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:text="בעת לחיצה על הכפתור מופעלת הודעת טוסט, באפשרותך לבטלה"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginRight="10sp"/>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20sp" />
+
     <LinearLayout
         android:layout_marginLeft="70dp"
         android:layout_marginBottom="20dp"
