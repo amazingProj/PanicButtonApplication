@@ -36,6 +36,9 @@
         android:layout_width="match_parent"
         android:layout_height="20sp" />
     <TextView
+
+        android:lineSpacingMultiplier="1"
+        android:lineSpacingExtra="5sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="עת לחיצה על הכפתור מושמע צליל בתדר גבוהה, באפשרותך לכבותו"
@@ -54,10 +57,12 @@
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:layout_marginLeft="70dp"
+            android:layout_marginRight="40sp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:checked="true"
+            android:textSize="26sp"
             android:text="@string/home_page_is_alarm" />
     </LinearLayout>
     <Space
@@ -67,9 +72,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto"
-        android:text="בעת לחיצה על הכפתור מופעלת הודעת טוסט, באפשרותך לבטלה"
+        android:text="בעת לחיצה על הכפתור מופעלת הודעת טוסט, באפשרותך לבטל אותה"
         android:textColor="@color/black"
         android:textSize="20sp"
+        android:lineSpacingMultiplier="1"
+        android:lineSpacingExtra="5sp"
         android:layout_marginRight="10sp"/>
     <Space
         android:layout_width="match_parent"
@@ -78,11 +85,13 @@
     <LinearLayout
         android:layout_marginLeft="70dp"
         android:layout_marginBottom="20dp"
+        android:layout_marginRight="20sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:textSize="26sp"
             android:checked="true"
             android:text="@string/home_page_is_toast_msg"/>
     </LinearLayout>
