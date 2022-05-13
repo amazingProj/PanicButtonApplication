@@ -3,6 +3,7 @@ package com.example.custombutton.main.model
 import android.content.Context
 import android.media.MediaPlayer
 import com.example.custombutton.R
+import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient
 
 /**
  * class represents an alarm sound in the background
@@ -20,7 +21,6 @@ class Alarm
     private var media: MediaPlayer? = MediaPlayer()
 
     init {
-        eventHandler.attachObserver(this)
         isAlarmOn = false
     }
 

@@ -9,10 +9,11 @@ import com.google.gson.Gson
 class InformationClass {
     // boolean variable tells us if the alarm is on or off
     private var isAlarmed : Boolean? = null
+    private var batteryLevelField : Float? = null
     //private var macAdderess : String = String()
     // a list off all access points in a scan
     private var accessPoints : ArrayList<AccessPoint>? = ArrayList()
-    private var IdNumber : Int = 2023
+    private var IdNumber : String = "AssafAndroid1010"
 
     val gson = Gson()
 
@@ -37,30 +38,17 @@ class InformationClass {
         isAlarmed = _isAlarmed
     }
 
+    fun setBattery(_battery : Float){
+        batteryLevelField = _battery
+    }
+
+
     /**
      * setter of accessPoint
      * @param accessPoint - an access point class
      */
     fun addAccessPoint(accessPoint: AccessPoint){
         accessPoints?.add(accessPoint)
-    }
-
-    /**
-     * clears all the access points from the singleton
-     */
-    fun newAccessPoints(){
-        if (accessPoints?.isEmpty() == true){
-            return;
-        }
-        accessPoints?.clear()
-    }
-
-    fun setNewId(id : Int){
-        IdNumber = id
-    }
-
-    fun getSpecialId() : Int{
-        return IdNumber
     }
 
     fun getNumberOfAccessPoint() : Int? {
@@ -75,11 +63,13 @@ class InformationClass {
         var result = HashMap<String, Any>()
         val string = "AccessPoint"
         var accessPointNumber = string + counter.toString()
+
         for (accessPoint in accessPoints!!){
             result[accessPointNumber] = accessPoint.toDictionry()
             ++counter
             accessPointNumber = string + counter.toString()
         }
+        result["Battery"] = batteryLevelField.toString()
         result["isAlarmedOn"] = isAlarmed.toString()
         result["NumberOfAccessPoints"] = accessPoints!!.size.toString()
         //result["deviceMacAddress"] = macAdderess

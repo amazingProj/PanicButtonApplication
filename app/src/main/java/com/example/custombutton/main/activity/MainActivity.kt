@@ -1,21 +1,19 @@
 package com.example.custombutton.main.activity
 
-import com.example.custombutton.main.model.AccessPoint
-import io.github.cdimascio.dotenv.dotenv
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
-import com.example.custombutton.main.model.EmergencySignal
+import android.content.IntentFilter
 import android.util.Log
 import android.os.Handler
 import android.net.wifi.WifiManager
+import android.os.BatteryManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.example.custombutton.R
-import com.example.custombutton.main.model.Alarm
-import com.example.custombutton.main.model.EventHandler
 import com.example.custombutton.main.ui.TextFeedbackClass
-import com.example.custombutton.main.model.InformationClass
-import android.net.wifi.WifiInfo
+import com.example.custombutton.main.model.*
 import com.example.custombutton.main.service.SocketSender
 import com.hivemq.client.mqtt.MqttClient
 import com.hivemq.client.mqtt.datatypes.MqttQos
@@ -23,7 +21,6 @@ import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient
 import com.hivemq.client.mqtt.MqttGlobalPublishFilter.ALL;
 import java.nio.charset.StandardCharsets.UTF_8;
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 /**
@@ -31,10 +28,32 @@ import java.util.concurrent.TimeUnit
  */
 class MainActivity : AppCompatActivity() {
 
-    var firstTime : Boolean = true;
-    var timestp : Long ?= 0;
-    private var isRelevant : Boolean = true;
-    private var isAlarmed : Boolean = false
+    private var battery : Float = 0f
+
+    private val receiver:BroadcastReceiver = object: BroadcastReceiver(){
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.apply {
+                battery = currentBatteryCharge
+            }
+        }
+    }
+
+    val Intent.currentBatteryCharge: Float
+        get() {
+            // integer containing the maximum battery level
+            val scale = getIntExtra(
+                BatteryManager.EXTRA_SCALE, -1
+            )
+
+            //  integer field containing the current battery
+            //  level, from 0 to EXTRA_SCALE
+            val level = getIntExtra(
+                BatteryManager.EXTRA_LEVEL, -1
+            )
+
+            // return current battery charge percentage
+            return level * 100 / scale.toFloat()
+        }
     /**
      * event handler for handeling all the event when user hit the panic button
      */
@@ -44,9 +63,8 @@ class MainActivity : AppCompatActivity() {
      * handler class responsible for to do certain task every x seconds
      */
     private var handler: Handler = Handler()
-   // lateinit var client : Mqtt5Client
 
-    private val FIVE_SECONDS = 5000 * 2
+    private val FIVE_SECONDS = 5000 * 6
     val topic = "mqtt/android/wifi/messages"
 
     /**
@@ -59,9 +77,8 @@ class MainActivity : AppCompatActivity() {
      */
     private val routePathWifiAccessPoint = "wifiInformation"
 
-    private val routePathMacAddress = "macAddress"
-
     private var newClient : Mqtt5BlockingClient ?= null
+
 
     /**
      * creates ui of the screen which in activity_main
@@ -76,6 +93,13 @@ class MainActivity : AppCompatActivity() {
             Alarm(eventHandler), TextFeedbackClass(eventHandler, this),
             EmergencySignal(eventHandler)
         );
+
+        // initialize a new intent filter instance
+        val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+
+        // register the broadcast receiver
+        registerReceiver(receiver,filter)
+
     }
 
     override fun onStart() {
@@ -135,52 +159,58 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         handler.postDelayed(object : Runnable {
             override fun run() {
-                val singleton : InformationClass = InformationClass.instance
 
-                    // deletes all the access points from singleton
-                    singleton.newAccessPoints()
-
-                // getting the wifi manger class
-                var wifiManager = applicationContext.getSystemService(android.content.Context.WIFI_SERVICE) as WifiManager?
-                var wifiInfo = wifiManager!!.getConnectionInfo()
-
-                var bool : Boolean = wifiManager.startScan()
-
-                // adding into singleton the access points that were found
-                if (bool){
-                    wifiManager.scanResults.forEach{
-                        var accessPoint : AccessPoint = AccessPoint()
-                        accessPoint.setFrequency(it.frequency)
-                        accessPoint.setBssid(it.BSSID)
-                        accessPoint.setSsid(it.SSID)
-                        accessPoint.setRssi(it.level)
-                        singleton.addAccessPoint(accessPoint)
-                    }
-                }
-
-                Log.d("size", wifiManager.scanResults.size.toString())
-                Log.d("singleton", singleton.toSend())
-
-                if (singleton.getNumberOfAccessPoint() != 0)
-                {
-                    // Publish the wifi scan to mqtt broker cloud
-
-                    newClient?.publishWith()
-                        ?.topic(topic)
-                        ?.payload(UTF_8.encode(singleton.toSend()))
-                        ?.qos(MqttQos.EXACTLY_ONCE)
-                        ?.send();
-
-                    // sending the data to server
-                    SocketSender.sendDataToServer(routePathWifiAccessPoint, singleton.toSend());
-                }
-
+                sendToMqttBroker()
                 handler.postDelayed(this, Integer.toUnsignedLong(delay))
             }
         }, Integer.toUnsignedLong(delay))
         super.onResume()
     }
 
+
+    fun sendToMqttBroker()
+    {
+        val singleton = InformationClass()
+
+        singleton.setBattery(battery)
+        singleton.setIsAlarmed(alarmed.boolean)
+
+        // getting the wifi manger class
+        var wifiManager = applicationContext.getSystemService(android.content.Context.WIFI_SERVICE) as WifiManager?
+        var wifiInfo = wifiManager!!.getConnectionInfo()
+
+        var bool : Boolean = wifiManager.startScan()
+
+
+        // adding into singleton the access points that were found
+        if (bool){
+            wifiManager.scanResults.forEach{
+                var accessPoint : AccessPoint = AccessPoint()
+                accessPoint.setBssid(it.BSSID)
+                accessPoint.setRssi(it.level)
+                singleton.addAccessPoint(accessPoint)
+            }
+        }
+
+        val str : String = singleton.toSend()
+
+        Log.d("size", wifiManager.scanResults.size.toString())
+        Log.d("str", str)
+
+        if (singleton.getNumberOfAccessPoint() != 0)
+        {
+            // Publish the wifi scan to mqtt broker cloud
+
+            newClient?.publishWith()
+                ?.topic(topic)
+                ?.payload(UTF_8.encode(singleton.toSend()))
+                ?.qos(MqttQos.EXACTLY_ONCE)
+                ?.send();
+
+            // sending the data to server
+            SocketSender.sendDataToServer(routePathWifiAccessPoint, str);
+        }
+    }
 
     /************************* Functions *****************************/
 
@@ -191,7 +221,11 @@ class MainActivity : AppCompatActivity() {
      *         in activity_main.xml with the view/button
      */
     fun notifyObservers(view: View) {
-        isAlarmed = true
+        if (!alarmed.boolean)
+        {
+            sendToMqttBroker()
+        }
+        alarmed.boolean = true
         eventHandler.notifyALlObservers(applicationContext)
     }
 

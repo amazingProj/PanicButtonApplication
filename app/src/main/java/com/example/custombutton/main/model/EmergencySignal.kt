@@ -32,18 +32,14 @@ class EmergencySignal
     private var newEventHandler: EventHandler? = null
 
     init {
-        eventHandler.attachObserver(this)
         newEventHandler = eventHandler
     }
 
     @Override
     override fun update(context: Context) {
         if (!isAlarmOn){
-            val info = InformationClass.instance
-            info.setIsAlarmed(true)
-
             isAlarmOn = true
-
+            alarmed.boolean = true
             // when it succeeded then do that
             handler.postDelayed({
                 newEventHandler?.notifyAllObserverEmergencySignal()
@@ -56,5 +52,6 @@ class EmergencySignal
         val singleton: InformationClass = InformationClass.instance
         singleton.setIsAlarmed(false)
         isAlarmOn = false
+        alarmed.boolean = false
     }
 }

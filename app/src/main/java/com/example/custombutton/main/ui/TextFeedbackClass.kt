@@ -39,7 +39,6 @@ class TextFeedbackClass
      * initial constructor of this class
      */
     init {
-        eventHandler.attachObserver(this)
         isAlarmOn = false
         activityView = activity
     }

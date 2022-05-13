@@ -2,8 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/home" android:icon="@drawable/home"
         android:title="@string/home_setting" />
-    <item android:id="@+id/socketio" android:icon="@drawable/socket"
-        android:title="@string/socketio_setting"/>
     <item android:id="@+id/mqtt" android:icon="@drawable/wifi"
         android:title="@string/mqtt_setting"/>
 
